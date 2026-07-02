@@ -127,17 +127,72 @@ Wireshark ?
 **➡️ Question 3.2 :** Qu'est-ce qui a changé ? Que voit-on à la place du contenu
 du fichier ?
 
-> **💡 Serveur sur ta propre machine (mode « chacun chez soi ») ?**
-> Utilise `localhost` / `127.0.0.1` au lieu de `<IP_SERVEUR>`.
-> - **macOS** : le Finder **refuse** de se connecter en SMB à sa propre machine.
->   Contourne-le via le Terminal :
->   ```bash
->   mkdir -p /tmp/smbtest
->   mount_smbfs -N "//apprenti:Qwertz_1234@127.0.0.1/public" /tmp/smbtest
->   cat /tmp/smbtest/message_secret.txt      # puis, à la fin : umount /tmp/smbtest
->   ```
-> - **Windows** : Windows occupe déjà le port 445 → héberge plutôt le serveur
->   sur une autre machine (Linux de préférence).
+### ⚙️ Cas particulier : le serveur SMB tourne sur TA propre machine
+
+Si tu héberges le serveur sur la **même** machine que celle qui teste, utilise
+`localhost` / `127.0.0.1`. Selon l'OS, il y a une petite manip à faire.
+
+#### 🍎 macOS — si le Finder (`Cmd+K`) ne fonctionne pas
+
+macOS **refuse** de connecter le Finder en SMB à sa propre machine. Passe par le
+**Terminal** :
+
+```bash
+mkdir -p /tmp/smbtest
+
+# Partage public (en clair)
+mount_smbfs -N "//apprenti:Qwertz_1234@127.0.0.1/public" /tmp/smbtest
+cat /tmp/smbtest/message_secret.txt
+umount /tmp/smbtest
+
+# Partage coffre (chiffré)
+mount_smbfs -N "//apprenti:Qwertz_1234@127.0.0.1/coffre" /tmp/smbtest
+cat /tmp/smbtest/message_secret.txt
+umount /tmp/smbtest
+```
+
+> Le `umount` entre les deux est important : on ne peut pas monter deux partages
+> sur le même dossier en même temps.
+
+#### 🪟 Windows — libérer le port 445
+
+Windows occupe déjà le port **445** avec son propre service de partage de
+fichiers. Pour héberger le conteneur SMB dessus, il faut le libérer
+temporairement (**PowerShell en Administrateur**) :
+
+```powershell
+# 1. Désactiver le service SMB de Windows, puis redémarrer
+Set-Service -Name LanmanServer -StartupType Disabled
+Restart-Computer
+
+# 2. Après le redémarrage : vérifier que le port 445 est libre
+#    (la commande ne doit RIEN renvoyer)
+Get-NetTCPConnection -LocalPort 445 -ErrorAction SilentlyContinue
+
+# 3. Lancer le lab (Docker Desktop doit être démarré)
+docker compose up -d --build
+docker compose ps          # labo-smb doit être "Up"
+```
+
+Puis teste dans l'Explorateur : `\\localhost\public` (`apprenti` / `Qwertz_1234`).
+
+**➡️ Remettre Windows comme avant, une fois le test terminé :**
+
+```powershell
+# 1. Arrêter le lab (libère le port 445)
+docker compose down
+
+# 2. Réactiver le service SMB de Windows
+Set-Service -Name LanmanServer -StartupType Automatic
+Start-Service -Name LanmanServer
+
+# 3. Vérifier : Status = Running, StartType = Automatic
+Get-Service LanmanServer
+```
+
+> 💡 Cette gymnastique n'est nécessaire que si tu héberges le serveur **sur
+> Windows**. Le plus simple reste d'héberger sur **Linux**, où le port 445 est
+> libre — les apprentis, eux, se connectent depuis Windows/Mac sans rien changer.
 
 
 ## 🧠 Synthèse
