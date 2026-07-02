@@ -6,7 +6,9 @@ RUN apt-get update && \
 
 COPY smb.conf /etc/samba/smb.conf
 COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+# Retire d'eventuels retours chariot Windows (CRLF) : sinon le script
+# clone sur Windows plante avec le code 255 (#!/bin/sh\r introuvable).
+RUN sed -i 's/\r$//' /entrypoint.sh /etc/samba/smb.conf && chmod +x /entrypoint.sh
 
 EXPOSE 445
 ENTRYPOINT ["/entrypoint.sh"]

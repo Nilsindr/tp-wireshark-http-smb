@@ -1,0 +1,4 @@
+# Force les fins de ligne LF (Unix) a la recuperation, meme sur Windows.
+# Evite que les scripts Linux (entrypoint.sh) et configs soient convertis
+# en CRLF au clone, ce qui ferait planter les conteneurs Docker.
+* text=auto eol=lf
