@@ -58,10 +58,10 @@ Pour tout arrêter proprement : `docker compose down`
 > `ip a` (Linux), `ipconfig` (Windows) ou Réglages → Réseau (macOS).
 
 
-## 🔎 Exercice 1 — HTTP : voler un mot de passe en clair
+## 🔎 Exercice 1 - HTTP : voler un mot de passe en clair
 
 1. Ouvre **Wireshark**, double-clique sur ton interface réseau pour démarrer la
-   capture (⚠️ attention à choisir la bonne — si tu utilises `localhost`, c'est
+   capture (⚠️ attention à choisir la bonne - si tu utilises `localhost`, c'est
    l'interface *loopback*).
 2. Dans le champ de filtre (en haut), applique un filtre pour n'afficher que le
    trafic qui t'intéresse.
@@ -77,7 +77,7 @@ Pour tout arrêter proprement : `docker compose down`
 **➡️ Question 1.3 :** À ton avis, qui d'autre sur le réseau aurait pu le voir ?
 
 
-## 🔒 Exercice 2 — HTTPS : le même site, mais chiffré
+## 🔒 Exercice 2 - HTTPS : le même site, mais chiffré
 
 1. Garde Wireshark en capture. *Indice : change de filtre.*
 2. Va sur **`https://localhost/`** (ou **`https://<IP_SERVEUR>/`**).
@@ -96,12 +96,12 @@ alors que HTTPS est censé être *plus* sécurisé que HTTP ? Qu'est-ce qu'une
 *autorité de certification* règle comme problème ?
 
 
-## 📁 Exercice 3 — SMB : contenu de fichier clair vs chiffré
+## 📁 Exercice 3 - SMB : contenu de fichier clair vs chiffré
 
 Deux partages sont disponibles, tous les deux avec le compte
 **`apprenti`** / mot de passe **`Qwertz_1234`**.
 
-### 3a — Partage `public` (NON chiffré)
+### 3a - Partage `public` (NON chiffré)
 
 1. Dans Wireshark, applique le filtre adapté au trafic SMB.
 2. Ouvre le partage (remplace `<IP_SERVEUR>` par `localhost` si le serveur est
@@ -116,7 +116,7 @@ Deux partages sont disponibles, tous les deux avec le compte
 **➡️ Question 3.1 :** Quel est le contenu du fichier, vu directement dans
 Wireshark ?
 
-### 3b — Partage `coffre` (SMB3 chiffré)
+### 3b - Partage `coffre` (SMB3 chiffré)
 
 1. Ferme la connexion précédente et garde la capture (tu peux aussi en relancer
    une nouvelle s'il y a trop d'informations à l'écran).
@@ -132,7 +132,7 @@ du fichier ?
 Si tu héberges le serveur sur la **même** machine que celle qui teste, utilise
 `localhost` / `127.0.0.1`. Selon l'OS, il y a une petite manip à faire.
 
-#### 🍎 macOS — si le Finder (`Cmd+K`) ne fonctionne pas
+#### 🍎 macOS - si le Finder (`Cmd+K`) ne fonctionne pas
 
 macOS **refuse** de connecter le Finder en SMB à sa propre machine. Passe par le
 **Terminal** :
@@ -154,7 +154,7 @@ umount /tmp/smbtest
 > Le `umount` entre les deux est important : on ne peut pas monter deux partages
 > sur le même dossier en même temps.
 
-#### 🪟 Windows — libérer le port 445
+#### 🪟 Windows - libérer le port 445
 
 Windows occupe déjà le port **445** avec son propre service de partage de
 fichiers. Pour héberger le conteneur SMB dessus, il faut le libérer
@@ -192,7 +192,7 @@ Get-Service LanmanServer
 
 > 💡 Cette gymnastique n'est nécessaire que si tu héberges le serveur **sur
 > Windows**. Le plus simple reste d'héberger sur **Linux**, où le port 445 est
-> libre — les apprentis, eux, se connectent depuis Windows/Mac sans rien changer.
+> libre - les apprentis, eux, se connectent depuis Windows/Mac sans rien changer.
 
 
 ## 🧠 Synthèse
