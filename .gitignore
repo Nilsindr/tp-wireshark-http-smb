@@ -1,0 +1,6 @@
+# Captures generees pendant le TP
+*.pcap
+*.pcapng
+
+# Fichiers systeme macOS
+.DS_Store

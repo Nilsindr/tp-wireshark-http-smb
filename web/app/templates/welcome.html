@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Labo Ecole - Connecte</title>
+  <style>
+    body { font-family: system-ui, sans-serif; background:#0f172a; color:#e2e8f0;
+           display:flex; min-height:100vh; align-items:center; justify-content:center; margin:0; }
+    .card { background:#1e293b; padding:2rem 2.5rem; border-radius:12px; width:380px;
+            box-shadow:0 10px 30px rgba(0,0,0,.4); }
+    code { background:#0f172a; padding:.15rem .4rem; border-radius:6px; color:#38bdf8; }
+    a { color:#38bdf8; }
+    .warn { color:#fca5a5; font-size:.85rem; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Bienvenue, {{ username }} 👋</h1>
+    <p>Le serveur a bien reçu ton identifiant et ton mot de passe
+       (via <strong>{{ proto|upper }}</strong>) :</p>
+    <ul>
+      <li>Identifiant : <code>{{ username }}</code></li>
+      <li>Mot de passe : <code>••••••••••••••</code></li>
+    </ul>
+    {% if proto == 'http' %}
+      <p class="warn">⚠️ Ton mot de passe vient de traverser le réseau EN CLAIR.
+         Sauras-tu le retrouver dans Wireshark ?</p>
+    {% else %}
+      <p>🔒 Cette fois, le trajet était chiffré par TLS.</p>
+    {% endif %}
+    <p><a href="/">← Retour</a></p>
+  </div>
+</body>
+</html>

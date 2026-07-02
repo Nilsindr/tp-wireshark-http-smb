@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Labo Ecole - Connexion</title>
+  <style>
+    body { font-family: system-ui, sans-serif; background:#0f172a; color:#e2e8f0;
+           display:flex; min-height:100vh; align-items:center; justify-content:center; margin:0; }
+    .card { background:#1e293b; padding:2rem 2.5rem; border-radius:12px; width:320px;
+            box-shadow:0 10px 30px rgba(0,0,0,.4); }
+    h1 { font-size:1.25rem; margin:0 0 1.5rem; }
+    label { display:block; font-size:.8rem; margin:.75rem 0 .25rem; color:#94a3b8; }
+    input { width:100%; padding:.6rem; border-radius:8px; border:1px solid #334155;
+            background:#0f172a; color:#e2e8f0; box-sizing:border-box; }
+    button { margin-top:1.25rem; width:100%; padding:.7rem; border:0; border-radius:8px;
+             background:#38bdf8; color:#0f172a; font-weight:600; cursor:pointer; }
+    .badge { display:inline-block; padding:.2rem .6rem; border-radius:999px; font-size:.7rem;
+             font-weight:700; }
+    .http  { background:#7f1d1d; color:#fecaca; }
+    .https { background:#14532d; color:#bbf7d0; }
+  </style>
+</head>
+<body>
+  <form class="card" action="/login" method="post">
+    <h1>Espace apprenti
+      {% if proto == 'https' %}
+        <span class="badge https">HTTPS 🔒</span>
+      {% else %}
+        <span class="badge http">HTTP ⚠️</span>
+      {% endif %}
+    </h1>
+    <label for="username">Identifiant</label>
+    <input id="username" name="username" value="apprenti" autocomplete="off">
+    <label for="password">Mot de passe</label>
+    <input id="password" name="password" type="password" value="MonMotDePasseEstSecurise_1234">
+    <button type="submit">Se connecter</button>
+  </form>
+</body>
+</html>

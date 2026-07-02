@@ -1,0 +1,32 @@
+services:
+  # --- Backend web : petit formulaire de login en Flask -----------------
+  web:
+    build: ./web/app
+    container_name: labo-web
+    expose:
+      - "5000"
+    restart: unless-stopped
+
+  # --- Reverse proxy nginx : sert le MEME site en HTTP (80) et HTTPS (443)
+  nginx:
+    build: ./web/nginx
+    container_name: labo-nginx
+    ports:
+      - "80:80"     # HTTP  -> mot de passe EN CLAIR dans la trame
+      - "443:443"   # HTTPS -> tout chiffre par TLS (certif auto-signe)
+    depends_on:
+      - web
+    restart: unless-stopped
+
+  # --- Serveur SMB : 2 partages sur le meme conteneur -------------------
+  #   \\<serveur>\public  -> SMB sans chiffrement  (contenu lisible)
+  #   \\<serveur>\coffre  -> SMB3 chiffre           (contenu illisible)
+  smb:
+    build: ./smb
+    container_name: labo-smb
+    environment:
+      SMB_USER: apprenti
+      SMB_PASSWORD: Qwertz_1234   # mot de passe du compte de demo SMB
+    ports:
+      - "445:445"
+    restart: unless-stopped
